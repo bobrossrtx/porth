@@ -149,8 +149,6 @@ def usage():
     print("     sim     Simulate the program")
     print("     com     Compile the program")
     print()
-
-
 def call_cmd(cmd):
     if debug:
         print(cmd)
@@ -171,8 +169,12 @@ if __name__ == "__main__":
     elif subcommand == "sim":
         simulate_program(program)
     elif subcommand == "com":
-        compile_program(program, "output.asm")
-        call_cmd(["nasm", "-felf64", "output.asm"])
-        call_cmd(["ld", "-o", "output", "output.o"])
+        compile_program(program, "/tmp/output.asm")
+        call_cmd(["nasm", "-felf64", "/tmp/output.asm"])
+        call_cmd(["ld", "-o", "output", "/tmp/output.o"])
+        if not debug:
+            call_cmd(["rm", "-f", "/tmp/output.o"])
+            call_cmd(["rm", "-f", "/tmp/output.asm"])
     else:
         print("Error: unknown subcommand")
+
